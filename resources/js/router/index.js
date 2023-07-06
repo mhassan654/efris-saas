@@ -225,32 +225,36 @@
 //     ), {})
 // }
 
-import { createRouter, createWebHistory } from 'vue-router'
+
+  import { createRouter,createWebHistory } from 'vue-router'
 import { sync } from 'vuex-router-sync'
 import store from '../store'
 import { createApp } from 'vue'
 import Meta from 'vue-meta'
 import routes from './routes'
+import { nextTick } from 'vue';
 
 const app = createApp()
-app.use(Meta)
+// app.use(Meta)
 
 const router = createRouter({
   history: createWebHistory(),
-  scrollBehavior,
+  scrollBehavior (to, from, savedPosition) {
+    // return desired position
+  },
   routes
 })
 
-sync(store, router)
+// sync(store, router)
 
 app.use(router)
 app.mount('#app')
 
 router.beforeEach(beforeEach)
-router.afterEach(afterEach)
+// router.afterEach(afterEach)
 
 
-export default function route(){
+// export default function router(){
 /**
  * Global router guard.
  *
@@ -278,8 +282,12 @@ async function beforeEach(to, from, next) {
   }
 
   // Start the loading bar.
-  if (components[components.length - 1].loading !== false) {
-    app.$nextTick(() => app.$loading.start())
+//   if (components[components.length - 1].loading !== false) {
+//     app.$nextTick(() => app.$loading.start())
+//   }
+
+if (components[components.length - 1].loading !== false) {
+    nextTick(() => app.$loading.start());
   }
 
   // Get the middleware for all the matched components.
@@ -303,11 +311,21 @@ async function beforeEach(to, from, next) {
  * @param {import('vue-router').RouteLocationNormalized} from
  * @param {import('vue-router').NavigationGuardNext} next
  */
-async function afterEach(to, from, next) {
-  await app.$nextTick()
+// async function afterEach(to, from, next) {
+//   await app.$nextTick()
 
-  app.$loading.finish()
-}
+//   app.$loading.finish()
+
+// }
+
+async function afterEach(to, from, next) {
+    await nextTick();
+
+    app.$loading.finish();
+
+    // Call next() to proceed to the next route
+    next();
+  }
 
 /**
  * Call each middleware.
@@ -435,4 +453,6 @@ function resolveMiddleware(requireContext) {
       { ...guards, [name]: guard.default }
     ), {})
 }
-}
+// }
+
+export default router;

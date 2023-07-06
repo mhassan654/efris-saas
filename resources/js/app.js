@@ -60,13 +60,10 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
-
+// app.provide('store', store);
 app.use(i18n)
-app.use(store())
-app.use(router({
-  history: createWebHistory(),
-  routes: []
-}))
+app.use(store)
+app.use(router)
 app.use(VuePageTransition)
 app.use(Clipboard)
 app.use(VueMasonry)

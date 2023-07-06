@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div id="app">
     <loading ref="loading" />
     <transition name="page" mode="out-in">
@@ -20,6 +20,7 @@ const layouts = requireContext
     components[name] = component.default || component
     return components
   }, {})
+
 
 export default {
   el: '#app',
@@ -67,4 +68,67 @@ export default {
     },
   },
 }
-</script>
+</script> -->
+<template>
+    <div id="app">
+      <loading ref="loading" />
+      <transition name="page" mode="out-in">
+        <component :is="layout" v-if="layout" />
+      </transition>
+    </div>
+  </template>
+
+  <script>
+  import { ref, onMounted } from 'vue';
+  import Loading from './Loading.vue';
+  import store from '../store';
+
+  // Load layout components dynamically.
+  const layoutFiles = import.meta.glob('./layouts/*.vue');
+  const layouts = {};
+
+  for (const file in layoutFiles) {
+    layoutFiles[file]().then((module) => {
+      const component = module.default || module;
+      const name = file.replace(/^\.\//, '').replace(/\.vue$/, '');
+      layouts[name] = component;
+    });
+  }
+
+  export default {
+    el: '#app',
+    components: {
+      Loading,
+    },
+
+    setup() {
+      const loadingRef = ref(null);
+      const layout = ref(null);
+      const defaultLayout = 'default';
+
+      const getSettings = async () => {
+        console.log(store)
+        await store.dispatch('fetchSettingData');
+      };
+
+      const setLayout = (layout) => {
+        if (!layout || !layouts[layout]) {
+          layout = defaultLayout;
+        }
+
+        layout.value = layouts[layout];
+      };
+
+      onMounted(() => {
+        loadingRef.value = true;
+        getSettings();
+      });
+
+      return {
+        loading: loadingRef,
+        layout,
+        setLayout,
+      };
+    },
+  };
+  </script>
