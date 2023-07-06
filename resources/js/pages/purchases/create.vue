@@ -576,7 +576,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Form from "vform";
-import accounts from "../cashbook/accounts";
+import accounts from "../cashbook/accounts/index.vue";
 import SupplierCreateModal from "../../components/SupplierCreateModal.vue";
 export default {
     middleware: ["auth", "check-permissions"],

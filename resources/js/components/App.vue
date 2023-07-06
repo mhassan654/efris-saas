@@ -81,7 +81,7 @@ export default {
   <script>
   import { ref, onMounted } from 'vue';
   import Loading from './Loading.vue';
-  import store from '../store';
+  import store from '../store'
 
   // Load layout components dynamically.
   const layoutFiles = import.meta.glob('./layouts/*.vue');
@@ -108,7 +108,7 @@ export default {
 
       const getSettings = async () => {
         console.log(store)
-        await store.dispatch('fetchSettingData');
+        await store.dispatch("operations/fetchSettingData");
       };
 
       const setLayout = (layout) => {

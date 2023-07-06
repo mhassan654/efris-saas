@@ -784,7 +784,7 @@
 <script>
 import Form from "vform";
 import { mapGetters } from "vuex";
-import { loadMessages } from "~/plugins/i18n";
+import { loadMessages } from "../../plugins/i18n";
 import axios from "axios";
 
 export default {

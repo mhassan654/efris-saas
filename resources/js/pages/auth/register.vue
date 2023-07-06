@@ -76,7 +76,7 @@
 
 <script>
 import Form from 'vform'
-import LoginWithGithub from '~/components/LoginWithGithub.vue'
+import LoginWithGithub from '../../components/LoginWithGithub.vue'
 
 export default {
   layout: 'basic',

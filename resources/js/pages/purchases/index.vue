@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import i18n from "../../../plugins/i18n";
+import i18n from "../../plugins/i18n";
 // import DateRangePicker from "vue2-daterange-picker";
 import moment from "moment";
 import { mapGetters } from "vuex";

@@ -1,8 +1,6 @@
-
 import { createStore } from 'vuex'
 
 const store = createStore({});
-
 
 const moduleFiles = import.meta.glob('./modules/*.js');
 Object.entries(moduleFiles).forEach(([path, module]) => {

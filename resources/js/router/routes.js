@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 
 function page(path) {
+  // return () => import(`../pages/${path}.vue`);
   return defineAsyncComponent(() => import(`../pages/${path}.vue`));
 }
 export default [

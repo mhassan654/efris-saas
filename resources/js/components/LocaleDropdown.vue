@@ -29,7 +29,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { loadMessages } from '~/plugins/i18n'
+import { loadMessages } from '../plugins/i18n'
 import LangFlag from 'vue-lang-code-flags'
 
 export default {
