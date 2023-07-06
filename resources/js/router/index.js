@@ -1,458 +1,156 @@
-// import Vue from 'vue'
-// import store from '../store'
-// import Meta from 'vue-meta'
-// import routes from './routes'
-// import Router from 'vue-router'
-// import { sync } from 'vuex-router-sync'
-
-// Vue.use(Meta)
-// Vue.use(Router)
-
-// // The middleware for every page of the application.
-// const globalMiddleware = ['locale', 'check-auth']
-
-// // Load middleware modules dynamically.
-// const routeMiddleware = resolveMiddleware(
-//   require.context('./middleware', false, /.*\.js$/)
-// )
-
-// const router = createRouter()
-
-// sync(store, router)
-
-// export default router
-
-// /**
-//  * Create a new router instance.
-//  *
-//  * @return {Router}
-//  */
-// function createRouter () {
-//   const router = new Router({
-//     scrollBehavior,
-//     mode: 'history',
-//     routes
-//   })
-
-//   router.beforeEach(beforeEach)
-//   router.afterEach(afterEach)
-
-//   return router
-// }
-
-// /**
-//  * Global router guard.
-//  *
-//  * @param {Route} to
-//  * @param {Route} from
-//  * @param {Function} next
-//  */
-// async function beforeEach (to, from, next) {
-//   let components = []
-
-//   try {
-//     // Get the matched components and resolve them.
-//     components = await resolveComponents(
-//       router.getMatchedComponents({ ...to })
-//     )
-//   } catch (error) {
-//     if (/^Loading( CSS)? chunk (\d)+ failed\./.test(error.message)) {
-//       window.location.reload(true)
-//       return
-//     }
-//   }
-
-//   if (components.length === 0) {
-//     return next()
-//   }
-
-//   // Start the loading bar.
-//   if (components[components.length - 1].loading !== false) {
-//     router.app.$nextTick(() => router.app.$loading.start())
-//   }
-
-//   // Get the middleware for all the matched components.
-//   const middleware = getMiddleware(components)
-
-//   // Call each middleware.
-//   callMiddleware(middleware, to, from, (...args) => {
-//     // Set the application layout only if "next()" was called with no args.
-//     if (args.length === 0) {
-//       router.app.setLayout(components[0].layout || '')
-//     }
-
-//     next(...args)
-//   })
-// }
-
-// /**
-//  * Global after hook.
-//  *
-//  * @param {Route} to
-//  * @param {Route} from
-//  * @param {Function} next
-//  */
-// async function afterEach (to, from, next) {
-//   await router.app.$nextTick()
-
-//   router.app.$loading.finish()
-// }
-
-// /**
-//  * Call each middleware.
-//  *
-//  * @param {Array} middleware
-//  * @param {Route} to
-//  * @param {Route} from
-//  * @param {Function} next
-//  */
-// function callMiddleware (middleware, to, from, next) {
-//   const stack = middleware.reverse()
-
-//   const _next = (...args) => {
-//     // Stop if "_next" was called with an argument or the stack is empty.
-//     if (args.length > 0 || stack.length === 0) {
-//       if (args.length > 0) {
-//         router.app.$loading.finish()
-//       }
-
-//       return next(...args)
-//     }
-
-//     const { middleware, params } = parseMiddleware(stack.pop())
-
-//     if (typeof middleware === 'function') {
-//       middleware(to, from, _next, params)
-//     } else if (routeMiddleware[middleware]) {
-//       routeMiddleware[middleware](to, from, _next, params)
-//     } else {
-//       throw Error(`Undefined middleware [${middleware}]`)
-//     }
-//   }
-
-//   _next()
-// }
-
-// /**
-//  * @param  {String|Function} middleware
-//  * @return {Object}
-//  */
-// function parseMiddleware (middleware) {
-//   if (typeof middleware === 'function') {
-//     return { middleware }
-//   }
-
-//   const [name, params] = middleware.split(':')
-
-//   return { middleware: name, params }
-// }
-
-// /**
-//  * Resolve async components.
-//  *
-//  * @param  {Array} components
-//  * @return {Array}
-//  */
-// function resolveComponents (components) {
-//   return Promise.all(components.map(component => {
-//     return typeof component === 'function' ? component() : component
-//   }))
-// }
-
-// /**
-//  * Merge the the global middleware with the components middleware.
-//  *
-//  * @param  {Array} components
-//  * @return {Array}
-//  */
-// function getMiddleware (components) {
-//   const middleware = [...globalMiddleware]
-
-//   components.filter(c => c.middleware).forEach(component => {
-//     if (Array.isArray(component.middleware)) {
-//       middleware.push(...component.middleware)
-//     } else {
-//       middleware.push(component.middleware)
-//     }
-//   })
-
-//   return middleware
-// }
-
-// /**
-//  * Scroll Behavior
-//  *
-//  * @link https://router.vuejs.org/en/advanced/scroll-behavior.html
-//  *
-//  * @param  {Route} to
-//  * @param  {Route} from
-//  * @param  {Object|undefined} savedPosition
-//  * @return {Object}
-//  */
-// function scrollBehavior (to, from, savedPosition) {
-//   if (savedPosition) {
-//     return savedPosition
-//   }
-
-//   if (to.hash) {
-//     return { selector: to.hash }
-//   }
-
-//   const [component] = router.getMatchedComponents({ ...to }).slice(-1)
-
-//   if (component && component.scrollToTop === false) {
-//     return {}
-//   }
-
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve({ x: 0, y: 0 })
-//     }, 190)
-//   })
-// }
-
-// /**
-//  * @param  {Object} requireContext
-//  * @return {Object}
-//  */
-// function resolveMiddleware (requireContext) {
-//   return requireContext.keys()
-//     .map(file =>
-//       [file.replace(/(^.\/)|(\.js$)/g, ''), requireContext(file)]
-//     )
-//     .reduce((guards, [name, guard]) => (
-//       { ...guards, [name]: guard.default }
-//     ), {})
-// }
-
-
-  import { createRouter,createWebHistory } from 'vue-router'
-import { sync } from 'vuex-router-sync'
-import store from '../store'
-import { createApp } from 'vue'
-import Meta from 'vue-meta'
-import routes from './routes'
+import { createRouter, createWebHistory } from 'vue-router';
+import { createApp } from 'vue';
+import store from '../store';
+// import { createRouterSync } from 'vuex-router-sync';
+import Meta from 'vue-meta';
+import routes from './routes';
 import { nextTick } from 'vue';
+import NProgress from "nprogress";
+const globalMiddleware = ['locale', 'check-auth'];
 
-const app = createApp()
-// app.use(Meta)
+// const app = createApp();
+// app.use(Meta);
 
 const router = createRouter({
-  history: createWebHistory(),
-  scrollBehavior (to, from, savedPosition) {
-    // return desired position
-  },
-  routes
-})
+    history: createWebHistory(),
+    routes
+});
 
-// sync(store, router)
+// Middleware for every page of the application.
+router.beforeEach(async (to, from, next) => {
+    let components = [];
 
-app.use(router)
-app.mount('#app')
-
-router.beforeEach(beforeEach)
-// router.afterEach(afterEach)
-
-
-// export default function router(){
-/**
- * Global router guard.
- *
- * @param {import('vue-router').RouteLocationNormalized} to
- * @param {import('vue-router').RouteLocationNormalized} from
- * @param {import('vue-router').NavigationGuardNext} next
- */
-async function beforeEach(to, from, next) {
-  let components = []
-
-  try {
-    // Get the matched components and resolve them.
-    components = await resolveComponents(
-      router.getResolvedComponent(to)
-    )
-  } catch (error) {
-    if (/^Loading( CSS)? chunk (\d)+ failed\./.test(error.message)) {
-      window.location.reload(true)
-      return
-    }
-  }
-
-  if (components.length === 0) {
-    return next()
-  }
-
-  // Start the loading bar.
-//   if (components[components.length - 1].loading !== false) {
-//     app.$nextTick(() => app.$loading.start())
-//   }
-
-if (components[components.length - 1].loading !== false) {
-    nextTick(() => app.$loading.start());
-  }
-
-  // Get the middleware for all the matched components.
-  const middleware = getMiddleware(components)
-
-  // Call each middleware.
-  callMiddleware(middleware, to, from, (...args) => {
-    // Set the application layout only if "next()" was called with no args.
-    if (args.length === 0) {
-      app.setLayout(components[0].layout || '')
+    try {
+        // Get the matched components and resolve them.
+        components = await Promise.allSettled(
+            router.getRoutes().flatMap((route) => route.getComponents())
+        );
+        components = components.map((component) => component.value);
+    } catch (error) {
+        if (/^Loading( CSS)? chunk (\d)+ failed\./.test(error.message)) {
+            window.location.reload(true);
+            return;
+        }
     }
 
-    next(...args)
-  })
-}
+    if (components.length === 0) {
+        return next();
+    }
 
-/**
- * Global after hook.
- *
- * @param {import('vue-router').RouteLocationNormalized} to
- * @param {import('vue-router').RouteLocationNormalized} from
- * @param {import('vue-router').NavigationGuardNext} next
- */
-// async function afterEach(to, from, next) {
-//   await app.$nextTick()
+    if (components[components.length - 1].loading !== false) {
+        app.$nextTick(() => app.$loading.start());
+    }
 
-//   app.$loading.finish()
+    const middleware = getMiddleware(components);
 
-// }
+    callMiddleware(middleware, to, from, (...args) => {
+        if (args.length === 0) {
+            app.setLayout(components[0].layout || '');
+        }
 
-async function afterEach(to, from, next) {
+        next(...args);
+    });
+});
+
+router.afterEach(async (to, from) => {
+    // await app.$nextTick();
+    // app.$loading.finish();
     await nextTick();
-
-    app.$loading.finish();
+    // NProgress.done();
+    // app.$loading.finish();
 
     // Call next() to proceed to the next route
-    next();
-  }
+    // next();
+});
 
-/**
- * Call each middleware.
- *
- * @param {Array} middleware
- * @param {import('vue-router').RouteLocationNormalized} to
- * @param {import('vue-router').RouteLocationNormalized} from
- * @param {import('vue-router').NavigationGuardNext} next
- */
+// async function afterEach(to, from, next) {
+//     await nextTick();
+//
+//     app.$loading.finish();
+//
+//     // Call next() to proceed to the next route
+//     next();
+//   }
+
 function callMiddleware(middleware, to, from, next) {
-  const stack = middleware.reverse()
+    const stack = middleware.reverse();
 
-  const _next = (...args) => {
-    // Stop if "_next" was called with an argument or the stack is empty.
-    if (args.length > 0 || stack.length === 0) {
-      if (args.length > 0) {
-        app.$loading.finish()
-      }
+    const _next = (...args) => {
+        if (args.length > 0 || stack.length === 0) {
+            if (args.length > 0) {
+                app.$loading.finish();
+            }
 
-      return next(...args)
-    }
+            return next(...args);
+        }
 
-    const { middleware, params } = parseMiddleware(stack.pop())
+        const { middleware, params } = parseMiddleware(stack.pop());
 
-    if (typeof middleware === 'function') {
-      middleware(to, from, _next, params)
-    } else if (routeMiddleware[middleware]) {
-      routeMiddleware[middleware](to, from, _next, params)
-    } else {
-      throw Error(`Undefined middleware [${middleware}]`)
-    }
-  }
+        if (typeof middleware === 'function') {
+            middleware(to, from, _next, params);
+        } else {
+            throw new Error(`Undefined middleware [${middleware}]`);
+        }
+    };
 
-  _next()
+    _next();
 }
 
-/**
- * @param  {String|Function} middleware
- * @return {Object}
- */
 function parseMiddleware(middleware) {
-  if (typeof middleware === 'function') {
-    return { middleware }
-  }
-
-  const [name, params] = middleware.split(':')
-
-  return { middleware: name, params }
-}
-
-/**
- * Resolve async components.
- *
- * @param  {Array} components
- * @return {Array}
- */
-function resolveComponents(components) {
-  return Promise.all(components.map(component => {
-    return typeof component === 'function' ? component() : component
-  }))
-}
-
-/**
- * Merge the the global middleware with the components middleware.
- *
- * @param  {Array} components
- * @return {Array}
- */
-function getMiddleware(components) {
-  const middleware = [...globalMiddleware]
-
-  components.filter(c => c.middleware).forEach(component => {
-    if (Array.isArray(component.middleware)) {
-      middleware.push(...component.middleware)
-    } else {
-      middleware.push(component.middleware)
+    if (typeof middleware === 'function') {
+        return { middleware };
     }
-  })
 
-  return middleware
+    const [name, params] = middleware.split(':');
+
+    return { middleware: name, params };
 }
 
-/**
- * Scroll Behavior
- *
- * @link https://router.vuejs.org/en/advanced/scroll-behavior.html
- *
- * @param  {import('vue-router').RouteLocationNormalized} to
- * @param  {import('vue-router').RouteLocationNormalized} from
- * @param  {Object|undefined} savedPosition
- * @return {Object}
- */
+function getMiddleware(components) {
+    const middleware = [...globalMiddleware];
+
+    components
+        .filter((c) => c.middleware)
+        .forEach((component) => {
+            if (Array.isArray(component.middleware)) {
+                middleware.push(...component.middleware);
+            } else {
+                middleware.push(component.middleware);
+            }
+        });
+
+    return middleware;
+}
+
 function scrollBehavior(to, from, savedPosition) {
-  if (savedPosition) {
-    return savedPosition
-  }
+    if (savedPosition) {
+        return savedPosition;
+    }
 
-  if (to.hash) {
-    return { el: to.hash }
-  }
+    if (to.hash) {
+        return { el: to.hash, behavior: 'smooth' };
+    }
 
-  const [component] = router.getMatchedComponents(to).slice(-1)
+    const [component] = router
+        .getRoutes()
+        .flatMap((route) => route.getComponents())
+        .slice(-1);
 
-  if (component && component.scrollToTop === false) {
-    return {}
-  }
+    if (component && component.scrollToTop === false) {
+        return {};
+    }
 
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ left: 0, top: 0 })
-    }, 190)
-  })
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ top: 0, left: 0, behavior: 'smooth' });
+        }, 190);
+    });
 }
 
-/**
- * @param  {Object} requireContext
- * @return {Object}
- */
-function resolveMiddleware(requireContext) {
-  return requireContext.keys()
-    .map(file =>
-      [file.replace(/(^.\/)|(\.js$)/g, ''), requireContext(file)]
-    )
-    .reduce((guards, [name, guard]) => (
-      { ...guards, [name]: guard.default }
-    ), {})
-}
-// }
+// createRouterSync(store, router);
+
+// app.use(router);
+// app.use(store);
+// app.mount('#app');
 
 export default router;

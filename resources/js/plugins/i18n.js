@@ -1,11 +1,11 @@
 // export default i18n
-import { createApp } from 'vue'
 import store from '../store'
 import { createI18n } from 'vue-i18n'
 
 const i18n = createI18n({
   locale: 'en',
-  messages: {}
+    allowComposition: true,
+    messages: {}
 })
 
 /**
@@ -13,8 +13,8 @@ const i18n = createI18n({
  */
 
 export async function loadMessages(locale) {
-  if (Object.keys(i18n.global.getLocaleMessage(locale)).length === 0) {
-    const messages = await import(`../lang/${locale}`)
+  if (Object.keys(i18n.global.getLocaleMessage('en')).length === 0) {
+    const messages = await import(`../lang/${'en'}`)
     i18n.global.setLocaleMessage(locale, messages.default)
   }
 

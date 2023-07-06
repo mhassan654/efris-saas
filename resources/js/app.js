@@ -1,8 +1,6 @@
 
-
-
 import './bootstrap';
-import { createApp } from 'vue'
+import { createApp,provide } from 'vue'
 import { createI18n } from 'vue-i18n'
 import store from './store'
 import router from './router'
@@ -10,7 +8,7 @@ import { createWebHistory } from 'vue-router'
 import  can  from './helpers/can'
 import App from './components/App.vue'
 // import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
-import VuePageTransition from 'vue-page-transition'
+// import VuePageTransition from 'vue-page-transition'
 import Clipboard from 'v-clipboard'
 import VueMasonry from 'vue-masonry-css'
 import VueHtmlToPaper from 'vue-html-to-paper'
@@ -18,13 +16,15 @@ import VueHtmlToPaper from 'vue-html-to-paper'
 import vSelect from 'vue-select'
 import moment from 'moment'
 import VTooltip from 'v-tooltip'
-
-const i18n = createI18n({
-  locale: 'en', // Specify your default locale here
-})
+import i18n from './plugins/i18n.js'
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 const app = createApp(App)
-// app.provide('store', store);
+// Set up the loading indicator
+app.config.globalProperties.$loading = NProgress;
+// Provide the store globally
+app.provide('store', store);
 
 // Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
 //   app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
@@ -33,7 +33,7 @@ const app = createApp(App)
 app.use(i18n)
 app.use(store)
 app.use(router)
-app.use(VuePageTransition)
+// app.use(VuePageTransition)
 app.use(Clipboard)
 app.use(VueMasonry)
 app.use(VueHtmlToPaper, {

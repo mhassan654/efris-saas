@@ -28,9 +28,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Navbar from "./components/Navbar.vue";
-import Sidebar from "./components/Sidebar.vue";
-import SidebarControll from "./components/SidebarControll.vue";
+import Navbar from "../components/Navbar.vue";
+import Sidebar from "../components/Sidebar.vue";
+import SidebarControll from "../components/SidebarControll.vue";
 
 if (localStorage.getItem("isRTL") === "true") {
   require("~/rtl-css/acculance-rtl-custom.css");

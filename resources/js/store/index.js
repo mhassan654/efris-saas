@@ -1,8 +1,12 @@
 import { createStore } from 'vuex'
 
-const store = createStore({});
+const store = createStore({
+
+});
 
 const moduleFiles = import.meta.glob('./modules/*.js');
+
+console.log(moduleFiles)
 Object.entries(moduleFiles).forEach(([path, module]) => {
   const moduleName = path.replace(/^\.\/(.*)\.\w+$/, '$1');
   module().then((moduleConfig) => {
